@@ -1,0 +1,10 @@
+in_dir/
+angr_crashes/
+
+*.json
+*.id*
+*.nam
+*.til
+
+simple_linter
+simple_linter-afl
