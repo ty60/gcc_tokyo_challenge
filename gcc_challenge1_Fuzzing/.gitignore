@@ -5,6 +5,8 @@ angr_crashes/
 *.id*
 *.nam
 *.til
+*.i64
+*.bin
 
 simple_linter
 simple_linter-afl
