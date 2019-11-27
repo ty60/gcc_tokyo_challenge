@@ -2,11 +2,6 @@ in_dir/
 out_dir/
 angr_crashes/
 
-*.json
-*.id*
-*.nam
-*.til
-*.i64
 *.bin
 
 simple_linter
