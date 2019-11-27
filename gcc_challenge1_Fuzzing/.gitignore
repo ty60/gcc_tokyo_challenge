@@ -6,3 +6,4 @@ angr_crashes/
 
 simple_linter
 simple_linter-afl
+simple_linter_strcmp-afl

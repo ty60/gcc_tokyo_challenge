@@ -1,11 +1,7 @@
-PROGS = simple_linter simple_linter-afl
-SO = strcmp/strcmp.so
+PROGS = simple_linter simple_linter-afl simple_linter_strcmp-afl
 
 
-all: $(PROGS) $(SO)
-
-$(SO): strcmp/strcmp.c
-	make -C strcmp
+all: $(PROGS)
 
 simple_linter: simple_linter.c
 	gcc -o simple_linter simple_linter.c
@@ -13,6 +9,8 @@ simple_linter: simple_linter.c
 simple_linter-afl: simple_linter.c
 	afl-gcc -o simple_linter-afl simple_linter.c
 
+simple_linter_strcmp-afl: simple_linter_strcmp.c
+	afl-gcc -o simple_linter_strcmp-afl simple_linter_strcmp.c
+
 clean:
 	rm $(PROGS)
-	rm $(SO)
