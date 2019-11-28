@@ -1,0 +1,6 @@
+*.json
+*.id*
+*.nam
+*.til
+*.i64
+.ccls-cache/
