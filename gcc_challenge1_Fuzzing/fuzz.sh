@@ -9,9 +9,10 @@ help() {
 
 
 binpath='./simple_linter-afl'
-while getopts sh OPT; do
+while getopts shl OPT; do
     case $OPT in
         "s" ) binpath='./simple_linter_strcmp-afl';;
+        "l" ) binpath='./simple_linter_laf-intel';;
         "h" ) help;;
     esac
 done
