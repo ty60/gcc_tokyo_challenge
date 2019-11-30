@@ -1,0 +1,27 @@
+start_time        : 1575011112
+last_update       : 1575097508
+fuzzer_pid        : 7936
+cycles_done       : 2962
+execs_done        : 387817310
+execs_per_sec     : 4506.05
+paths_total       : 13
+paths_favored     : 11
+paths_found       : 12
+paths_imported    : 0
+max_depth         : 7
+cur_path          : 3
+pending_favs      : 0
+pending_total     : 0
+variable_paths    : 0
+stability         : 100.00%
+bitmap_cvg        : 0.06%
+unique_crashes    : 3
+unique_hangs      : 10
+last_path         : 1575012655
+last_crash        : 1575012664
+last_hang         : 1575067320
+execs_since_crash : 380336290
+exec_timeout      : 20
+afl_banner        : simple_linter_laf-intel
+afl_version       : 2.26b
+command_line      : afl-fuzz -i in_dir -o out_dir -f input -- ./simple_linter_laf-intel input
