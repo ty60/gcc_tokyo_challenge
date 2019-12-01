@@ -1,5 +1,5 @@
-target = find_backup
-objs = find_backup.o util.o
+target = revert_superblock
+objs = revert_superblock.o util.o
 
 CC = gcc
 CFLAGS = -Wall -g
