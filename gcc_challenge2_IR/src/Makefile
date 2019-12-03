@@ -1,5 +1,5 @@
 target = revert_superblock
-objs = revert_superblock.o util.o
+objs = revert_superblock.o apfs.o util.o
 
 CC = gcc
 CFLAGS = -Wall -g
