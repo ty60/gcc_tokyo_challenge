@@ -20,13 +20,21 @@
  */
 
 
+/*
+ * Copy apfs from path to output_path and overwrite the container superblock with backup.
+ */
 int main(void)
 {
     char *path = "../challenge.raw";
     char *output_path = "../fixed.raw";
+    uint64_t offset = 0;
 
     nx_superblock_t *sb_p = xmalloc(sizeof(nx_superblock_t));
     get_backup(path, sb_p, 0, 0);
+
+    offset = get_descriptor_offset(path, sb_p);
+    printf("Copy from %lx\n", offset);
+    printf("Copy to: %lx\n", 0UL);
 
     FILE *broken_fp = fopen(path, "rb");
     FILE *fixed_fp = fopen(output_path, "wb");

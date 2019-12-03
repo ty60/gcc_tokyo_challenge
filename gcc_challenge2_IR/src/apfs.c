@@ -8,6 +8,9 @@
 #include "util.h"
 
 
+/*
+ * Load descriptors of apfs specified by the path.
+ */
 void get_descriptors(char const *path, nx_superblock_t **descriptors)
 {
     FILE *fp = fopen(path, "rb");
@@ -25,8 +28,10 @@ void get_descriptors(char const *path, nx_superblock_t **descriptors)
 
     obj_phys_t *hdr = (obj_phys_t *)xmalloc(sizeof(obj_phys_t));
     int i;
-    // load each descriptor block
+    // sb_p->nx_xp_desc_base shows the base block of checkpoint descriptor area.
+    // load each descriptor block.
     for (i = 0; i < sb_p->nx_xp_desc_blocks; i++) {
+        // 
         // Seek to read object header
         fseek(fp, (sb_p->nx_xp_desc_base + i) * sb_p->nx_block_size, SEEK_SET);
 
@@ -52,6 +57,9 @@ void get_descriptors(char const *path, nx_superblock_t **descriptors)
 }
 
 
+/*
+ * Return the offset to the given descriptor in the apfs at path.
+ */
 uint64_t get_descriptor_offset(const char *path, nx_superblock_t *descriptor)
 {
     FILE *fp = fopen(path, "rb");
@@ -63,7 +71,6 @@ uint64_t get_descriptor_offset(const char *path, nx_superblock_t *descriptor)
     nx_superblock_t *sb_p = (nx_superblock_t *)xmalloc(sizeof(nx_superblock_t));
     fread(sb_p, sizeof(nx_superblock_t), 1, fp);
 
-    // In the given challenge block_size is zeroed out
     if (sb_p->nx_block_size == 0)
         sb_p->nx_block_size = 0x1000;
 
@@ -85,6 +92,11 @@ uint64_t get_descriptor_offset(const char *path, nx_superblock_t *descriptor)
 }
 
 
+/*
+ * Search for backup of container superblock from checkpoint descriptor area.
+ * If SPEC_XID is specified in flag it will search for backup with generation target_xid.
+ * If SPEC_XID is not specified it will load the most recent backup and target_xid is ignored.
+ */
 void get_backup(char const *path, nx_superblock_t *backup, xid_t target_xid, int flag)
 {
     int i;

@@ -12,26 +12,28 @@
 
 
 /*
- * 1. Open `challenge.raw`.
- * 2. Read volume superblock.
- * 3. Read `nx_xp_desc_block`, the first block starting from `nx_xp_desc_base`.
- * 4. Check object type and skip if the type is `OBJECT_TYPE_CHECKPOINT_MAP`.
- * 5. Find `nx_superblock_t` which the largest `xid`.
+ * Copy apfs at path to output_path.
+ * Overwrite the container superblock with backup with target_xid.
+ * For the backups with larger xid than the target_xid,
+ * break the checksums so that those backups will be ignored on mounting.
  */
-
-
 int main(void)
 {
     int i;
     xid_t target_xid = 0x3c;
-    char *path = "../challenge.raw";
+    char *path = "../fixed.raw";
     char *output_path = "../revert_old.raw";
+    uint64_t offset = 0;
     nx_superblock_t *backup;
     nx_superblock_t *break_blocks[16];
     xid_t break_xids[] = { 0x3e, 0x3d };
 
     backup = xmalloc(sizeof(nx_superblock_t));
     get_backup(path, backup, target_xid, SPEC_XID);
+
+    offset = get_descriptor_offset(path, backup);
+    printf("Copy from %lx\n", offset);
+    printf("Copy to %lx\n", 0UL);
 
     for (i = 0; i < sizeof(break_xids) / sizeof(xid_t); i++) {
         break_blocks[i] = xmalloc(sizeof(nx_superblock_t));
@@ -57,6 +59,7 @@ int main(void)
             fprintf(stderr, "offset for backup not found");
             exit(1);
         }
+        printf("Break checksum at %lx (xid == %lx)\n", offset, break_xids[i]);
         // break offset so it will be ignored on mounting
         memset((break_blocks[i]->nx_o.o_cksum), 0xff, 64);
         fseek(fixed_fp, offset, SEEK_SET);

@@ -9,6 +9,9 @@
 #define MAX_DESCRIPTORS 32
 
 
+/*
+ * List xids of all the container superblock backups in checkpoint descriptor area.
+ */
 int main(void)
 {
     nx_superblock_t *descriptors[MAX_DESCRIPTORS];
