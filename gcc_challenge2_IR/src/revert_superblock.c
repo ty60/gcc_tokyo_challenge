@@ -26,7 +26,7 @@ int main(void)
     char *output_path = "../fixed.raw";
 
     nx_superblock_t *sb_p = xmalloc(sizeof(nx_superblock_t));
-    get_backup(path, sb_p);
+    get_backup(path, sb_p, 0, 0);
 
     FILE *broken_fp = fopen(path, "rb");
     FILE *fixed_fp = fopen(output_path, "wb");

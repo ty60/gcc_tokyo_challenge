@@ -296,9 +296,10 @@ typedef struct j_file_extent_val j_file_extent_val_t;
 #define J_FILE_EXTENT_FLAG_SHIFT 56
 
 
-
+#define SPEC_XID 1
+void get_backup(char const *path, nx_superblock_t *backup, xid_t target_xid, int flag);
 void get_descriptors(char const *path, nx_superblock_t **descriptors);
-void get_backup(char const *path, nx_superblock_t *backup);
+uint64_t get_descriptor_offset(const char *path, nx_superblock_t *descriptor);
 
 
 #endif
