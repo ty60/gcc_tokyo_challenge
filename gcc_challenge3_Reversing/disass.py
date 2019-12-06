@@ -11,7 +11,6 @@ def disass(binpath):
         if binary[i] == 0x1a: # MOVI reg_dst, imm32
             reg_dst = binary[i+1]
             imm = binary[i+2:i+2+4]
-            # import pdb; pdb.set_trace()
             asm += "movi r{}, 0x{:08x}\n".format(reg_dst, struct.unpack("I", imm)[0])
             i += 6
         elif binary[i] == 0x1b: # MOV reg_dst, reg_src

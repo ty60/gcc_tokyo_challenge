@@ -6,7 +6,6 @@ BASE_ADDR = 0x400000
 def crack():
     proj = angr.Project('./vmgcc')
 
-    # flag = claripy.BVS('flag', 8 * 16).concat(claripy.BVV(b'\n', size=8))
     flag = claripy.BVS('flag', 8 * 16)
     state = proj.factory.full_init_state(stdin=flag)
 
@@ -25,4 +24,4 @@ def crack():
 
 if __name__ == '__main__':
     crack()
-    # cracked flag: p0aah'$$("(((!!i
+    # cracked flag: ppda(E$$(0!(a!(i
