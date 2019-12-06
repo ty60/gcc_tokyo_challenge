@@ -6,6 +6,12 @@ from pathlib import Path
 
 
 def forgive_symbol_segv(proj, symbol):
+    """
+    Permit segmentation fault inside function specified by symbol.
+    It hooks the given function (symbol) and disables STRICT_PAGE_ACCESS,
+    while inside the function.
+    It will enable STRICT_PAGE_ACCESS when the function returns.
+    """
     sim_proc = None
     if proj.is_symbol_hooked(symbol):
         sim_proc = proj.hooked_by(proj.loader.find_symbol(symbol).rebased_addr)
@@ -26,9 +32,6 @@ def forgive_symbol_segv(proj, symbol):
                     break
 
             self.project.unhook_symbol(self.symbol_name)
-            # switch on STRICT_PAGE_ACCESS incase it is already off.
-            # remove will cause error on removing unexisting switch.
-            # self.state.options.update({angr.options.STRICT_PAGE_ACCESS})
             self.state.options.remove(angr.options.STRICT_PAGE_ACCESS)
 
             if self.sim_proc_class is None:
@@ -52,25 +55,19 @@ def crack(binpath):
     proj = angr.Project(binpath)
 
     argv = [binpath, FILE_NAME]
+    # Enable STRICT_PAGE_ACCESS so angr will not allow unpermitted memory access.
+    # Which is basicly a crash.
     state = proj.factory.full_init_state(args=argv,
                                          add_options={angr.options.STRICT_PAGE_ACCESS})
 
-    # TODO: Maybe I shouldn't spcify concrete size.
-    # Should size also be an data to solve dynamically?
     content = claripy.BVS('input', 200 * 8)
     input_file = angr.SimFile(FILE_NAME, content=content)
     state.fs.insert(FILE_NAME, input_file)
 
-    # forgive segmentation faults in libc functions
+    # forgive segmentation faults in fopen
     forgive_symbol_segv(proj, 'fopen')
-    forgive_symbol_segv(proj, 'fprintf')
-    forgive_symbol_segv(proj, 'malloc')
-    forgive_symbol_segv(proj, 'fclose')
-    # forgive_symbol_segv(proj, 'free') # will not finish
-    # forgive_symbol_segv(proj, 'fseek') # will not finish
 
     simgr = proj.factory.simgr(state)
-    # run to call to function crash
     simgr.run()
 
     if (len(simgr.errored) > 0):
