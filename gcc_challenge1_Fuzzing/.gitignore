@@ -1,6 +1,5 @@
 in_dir/
 out_dir/
-angr_crashes/
 
 *.bin
 
