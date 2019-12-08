@@ -1,8 +1,9 @@
 # Reversing report
+The same report can be seen here: https://github.com/yasm1/gcc_tokyo_challenge/blob/master/gcc_challenge3_Reversing/report.md
 
 # 1.
 The script can also be seen here: https://github.com/yasm1/gcc_tokyo_challenge/blob/master/gcc_challenge3_Reversing/crack.py
-```
+```python
 import angr
 import claripy
 
@@ -35,7 +36,7 @@ if __name__ == '__main__':
 # 2.
 The disassembler can also be seen here: https://github.com/yasm1/gcc_tokyo_challenge/blob/master/gcc_challenge3_Reversing/disass.py
 
-```
+```python
 import struct
 
 
@@ -77,4 +78,3 @@ if __name__ == '__main__':
     asm = disass("./keycheck")
     print(asm)
 ```
-
