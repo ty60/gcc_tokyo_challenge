@@ -21,7 +21,7 @@
 
 オフセット 0x8000 には container superblock の最新ではないバックアップが保存されている (o_xid == 0x3c) 。このバックアップが利用している volume の `iir_vol40.pdf` への参照情報は破壊されていない。なのでこのバックアップを container superblock として container 先頭の オフセット 0x0 にコピーした。
 
-ただこれだけでは apfs-fuse でマウントしたとしても `irr_vol40.pdf` は正常に読み込めない。配布資料 `apfs101.pdf` の p10 には apfs-fuse は checkpoint descriptor area にある最新世代の container superblock を利用しないとあるが、おそらく実際には apfs-fuse にこのような機能が実装されていると考えられる (https://github.com/sgan81/apfs-fuse/blob/a04abfed5801934b7fa4029116b6738f5f2a3814/ApfsLib/ApfsContainer.cpp#L85)。
+ただこれだけでは apfs-fuse でマウントしたとしても `irr_vol40.pdf` は正常に読み込めない。配布資料 `apfs101.pdf` の p10 には apfs-fuse は checkpoint descriptor area にある最新世代の container superblock を利用しないとあるが、おそらく実際には apfs-fuse にこのような機能が実装されていると考えられる (https://github.com/sgan81/apfs-fuse/blob/a04abfed5801934b7fa4029116b6738f5f2a3814/ApfsLib/ApfsContainer.cpp#L85) 。
 
 このため `iir_vol40.pdf` の正常な情報を保持している container superblock を container 先頭にコピーして apfs-fuse でマウントしただけではファイルは読み込めない。apfs-fuse はより新しい世代の、 `iir_vol40.pdf` の情報が壊れている container superblock のバックアップを探し出して利用するからである。  
 具体的には先頭にコピーしたバックアップ (o_xid == 0x3c) よりも新しいバックアップが2つある。1つはオフセット 0x2000 (o_xid == 0x3d)、もう一つはオフセット 0x4000 (o_xid == 0x3e) に存在するバックアップである。  
